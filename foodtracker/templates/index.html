@@ -5,13 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Food Tracker | Home</title>
-
     <link
       href="https://fonts.googleapis.com/css?family=Oswald|Ubuntu:400,700"
       rel="stylesheet"
     />
-
-    <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='Bootstrap/css/united.min.css') }}"
@@ -20,13 +17,6 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='styles.css') }}"
     />
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
   </head>
   <body>
     <div class="container-fluid" id="wrapper">
@@ -58,7 +48,11 @@
         <div class="col-lg-4 col-lg-offset-4">
           <div class="panel panel-default">
             <div class="panel-body">
-              <form action="" method="POST" role="form">
+              <form
+                action="{{ url_for('main.create_log') }}"
+                method="POST"
+                role="form"
+              >
                 <div class="form-group">
                   <label
                     ><i class="glyphicon glyphicon-plus-sign"></i> Add New
@@ -68,9 +62,11 @@
                     <input
                       type="date"
                       class="form-control"
+                      name="date"
                       placeholder="Select New Date"
                       aria-label="date"
                       aria-describedby="add-btn"
+                      id="date"
                     />
                     <span class="input-group-btn">
                       <button
@@ -92,130 +88,51 @@
       <div class="row t20">
         <div class="col-lg-12">
           <h4 class="text-center text-white">
-            <strong>Existing Records (30)</strong>
+            <strong>Existing Records ({{ log_dates|length }})</strong>
           </h4>
         </div>
       </div>
 
+      {% for row in log_dates|batch(4) %}
       <div class="row t20">
+        {% for log_date in row %}
         <div class="col-lg-3">
           <div class="panel panel-warning">
             <div class="panel-body text-bold">
-              <i class="glyphicon glyphicon-calendar"></i> December 14, 2017
+              <i class="glyphicon glyphicon-calendar"></i> {{
+              log_date['log_date'].date.strftime('%B %d, %Y') }}
 
               <a
                 class="btn btn-primary btn-xs pull-right"
-                href="{{ url_for('main.view') }}"
+                href="{{ url_for('main.view', log_id=log_date['log_date'].id) }}"
               >
                 View <i class="glyphicon glyphicon-arrow-right"></i>
               </a>
             </div>
             <ul class="list-group">
               <li class="list-group-item text-bold">
-                <span class="badge">60</span> Protein
+                <span class="badge">{{ log_date['proteins'] }}</span> Protein
               </li>
               <li class="list-group-item text-bold">
-                <span class="badge">49</span> Carbohydrate
+                <span class="badge">{{ log_date['carbs'] }}</span> Carbohydrate
               </li>
               <li class="list-group-item text-bold">
-                <span class="badge">55</span> Fat
+                <span class="badge">{{ log_date['fats'] }}</span> Fat
               </li>
               <li class="list-group-item text-bold">
-                <span class="badge">955</span> Calories
+                <span class="badge">{{ log_date['calories'] }}</span> Calories
               </li>
             </ul>
           </div>
         </div>
-        <div class="col-lg-3">
-          <div class="panel panel-warning">
-            <div class="panel-body text-bold">
-              <i class="glyphicon glyphicon-calendar"></i> December 14, 2017
-
-              <a
-                class="btn btn-primary btn-xs pull-right"
-                href="{{ url_for('main.view') }}"
-              >
-                View <i class="glyphicon glyphicon-arrow-right"></i>
-              </a>
-            </div>
-            <ul class="list-group">
-              <li class="list-group-item text-bold">
-                <span class="badge">60</span> Protein
-              </li>
-              <li class="list-group-item text-bold">
-                <span class="badge">49</span> Carbohydrate
-              </li>
-              <li class="list-group-item text-bold">
-                <span class="badge">55</span> Fat
-              </li>
-              <li class="list-group-item text-bold">
-                <span class="badge">955</span> Calories
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <div class="panel panel-warning">
-            <div class="panel-body text-bold">
-              <i class="glyphicon glyphicon-calendar"></i> December 14, 2017
-
-              <a
-                class="btn btn-primary btn-xs pull-right"
-                href="{{ url_for('main.view') }}"
-              >
-                View <i class="glyphicon glyphicon-arrow-right"></i>
-              </a>
-            </div>
-            <ul class="list-group">
-              <li class="list-group-item text-bold">
-                <span class="badge">60</span> Protein
-              </li>
-              <li class="list-group-item text-bold">
-                <span class="badge">49</span> Carbohydrate
-              </li>
-              <li class="list-group-item text-bold">
-                <span class="badge">55</span> Fat
-              </li>
-              <li class="list-group-item text-bold">
-                <span class="badge">955</span> Calories
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <div class="panel panel-warning">
-            <div class="panel-body text-bold">
-              <i class="glyphicon glyphicon-calendar"></i> December 14, 2017
-
-              <a
-                class="btn btn-primary btn-xs pull-right"
-                href="{{ url_for('main.view') }}"
-              >
-                View <i class="glyphicon glyphicon-arrow-right"></i>
-              </a>
-            </div>
-            <ul class="list-group">
-              <li class="list-group-item text-bold">
-                <span class="badge">60</span> Protein
-              </li>
-              <li class="list-group-item text-bold">
-                <span class="badge">49</span> Carbohydrate
-              </li>
-              <li class="list-group-item text-bold">
-                <span class="badge">55</span> Fat
-              </li>
-              <li class="list-group-item text-bold">
-                <span class="badge">955</span> Calories
-              </li>
-            </ul>
-          </div>
-        </div>
+        {% endfor %}
       </div>
+      {% endfor %}
 
       <footer>
         <div class="row pad">
           <div class="col-lg-12 text-center">
-            Copyright &copy; 2022 <strong>Food Tracker</strong>
+            Copyright &copy; 2023 <strong>Food Tracker</strong>
           </div>
         </div>
       </footer>
